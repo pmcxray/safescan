@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>QR Student Monitoring System</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --brand:#0F6E56;--brand-hover:#085041;--brand-light:#E1F5EE;--brand-mid:#1D9E75;--brand-pale:#9FE1CB;
+  --accent:#185FA5;--accent-light:#E6F1FB;--accent-mid:#378ADD;
+  --amber:#BA7517;--amber-light:#FAEEDA;--amber-pale:#FAC775;
+  --red:#A32D2D;--red-light:#FCEBEB;--red-pale:#F7C1C1;
+  --bg:#F4F6F5;--surface:#fff;--surface2:#F1F5F3;--surface3:#E8EEE9;
+  --border:#D3D8D5;--border-light:#E8ECEA;
+  --text:#1A2420;--muted:#5A6B65;--hint:#8FA39D;
+  --font:'DM Sans',sans-serif;--mono:'Space Mono',monospace;
+  --radius:10px;--radius-lg:14px;--radius-xl:20px;
+  --shadow:0 1px 3px rgba(0,0,0,0.08),0 4px 12px rgba(0,0,0,0.04);
+  --shadow-md:0 4px 16px rgba(0,0,0,0.10),0 1px 4px rgba(0,0,0,0.06);
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.6}
+input,button,select{font-family:var(--font)}
+button{cursor:pointer}
+a{text-decoration:none}
+
+/* ── PAGES ── */
+.page{display:none;min-height:100vh}
+.page.active{display:flex}
+
+/* ══════════════════════════════
+   LOGIN PAGE
+══════════════════════════════ */
+#page-login{align-items:stretch}
+.login-left{
+  flex:0 0 420px;background:var(--brand);padding:3rem 2.5rem;
+  display:flex;flex-direction:column;justify-content:space-between;
+  position:relative;overflow:hidden
+}
+.login-left::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:280px;height:280px;border-radius:50%;
+  background:rgba(255,255,255,0.05)
+}
+.login-left::after{
+  content:'';position:absolute;bottom:-80px;left:-40px;
+  width:220px;height:220px;border-radius:50%;
+  background:rgba(255,255,255,0.04)
+}
+.login-grid-bg{position:absolute;top:0;left:0;width:100%;height:100%;opacity:.06;pointer-events:none}
+.login-logo{position:relative;z-index:1}
+.logo-icon{width:54px;height:54px;background:rgba(255,255,255,.15);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem}
+.login-tagline{font-family:var(--mono);font-size:10px;letter-spacing:2.5px;color:rgba(255,255,255,.55);text-transform:uppercase;margin-bottom:.5rem}
+.login-title{font-size:2rem;font-weight:600;color:#fff;line-height:1.2;margin-bottom:1rem}
+.login-desc{font-size:13px;color:rgba(255,255,255,.75);line-height:1.7}
+.login-features{position:relative;z-index:1;display:flex;flex-direction:column;gap:12px}
+.feat-item{display:flex;align-items:center;gap:12px}
+.feat-icon{width:30px;height:30px;background:rgba(255,255,255,.12);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.feat-text{font-size:12px;color:rgba(255,255,255,.85)}
+
+.login-right{flex:1;background:var(--surface);padding:3rem;display:flex;flex-direction:column;justify-content:center;max-width:480px;margin:0 auto;width:100%}
+.login-right-wrap{width:100%;max-width:380px;margin:0 auto}
+.login-heading-sub{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--hint);margin-bottom:.4rem}
+.login-heading{font-size:1.7rem;font-weight:600;color:var(--text);margin-bottom:2rem}
+
+.role-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:1.5rem}
+.role-btn{
+  padding:12px 6px;border-radius:var(--radius);border:1px solid var(--border);
+  background:var(--surface);cursor:pointer;font-size:12px;font-weight:500;
+  color:var(--muted);transition:all .15s;text-align:center;line-height:1.4
+}
+.role-btn .role-icon{font-size:18px;margin-bottom:4px;display:block}
+.role-btn.active{background:var(--brand-light);border-color:var(--brand);color:var(--brand)}
+
+.form-group{margin-bottom:1rem}
+.form-label{display:block;font-size:12px;font-weight:500;color:var(--muted);margin-bottom:.4rem;letter-spacing:.3px}
+.form-input{
+  width:100%;padding:10px 14px;border-radius:var(--radius);border:1px solid var(--border);
+  background:var(--surface2);font-size:14px;color:var(--text);
+  outline:none;transition:border .15s,background .15s
+}
+.form-input:focus{border-color:var(--brand);background:var(--surface)}
+.pw-wrap{position:relative}
+.pw-wrap .form-input{padding-right:44px}
+.pw-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--hint);font-size:16px;line-height:1;padding:2px}
+.pw-toggle:hover{color:var(--muted)}
+.forgot{text-align:right;margin-top:6px}
+.forgot a{font-size:12px;color:var(--brand)}
+
+.error-box{
+  display:none;background:var(--red-light);border:1px solid #F09595;
+  border-radius:var(--radius);padding:8px 12px;margin-bottom:1rem;
+  font-size:13px;color:var(--red)
+}
+
+.btn-primary{
+  width:100%;padding:13px;background:var(--brand);border:none;
+  border-radius:var(--radius);color:#fff;font-size:14px;font-weight:500;
+  transition:background .15s;letter-spacing:.3px
+}
+.btn-primary:hover{background:var(--brand-hover)}
+
+.divider{display:flex;align-items:center;gap:10px;margin:1.25rem 0}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border-light)}
+.divider span{font-size:11px;color:var(--hint)}
+
+.btn-qr{
+  width:100%;padding:11px;background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--radius);color:var(--text);font-size:13px;font-weight:500;
+  display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s
+}
+.btn-qr:hover{background:var(--accent-light);border-color:var(--accent-mid)}
+.login-note{margin-top:1.5rem;font-size:11px;color:var(--hint);text-align:center}
+
+/* ══════════════════════════════
+   SHARED DASHBOARD SHELL
+══════════════════════════════ */
+.dash-shell{flex-direction:column;background:var(--bg)}
+.topbar{
+  height:58px;background:var(--surface);border-bottom:1px solid var(--border-light);
+  display:flex;align-items:center;padding:0 1.5rem;gap:1rem;
+  position:sticky;top:0;z-index:100;box-shadow:var(--shadow)
+}
+.topbar-logo{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;color:var(--brand)}
+.topbar-logo-icon{width:32px;height:32px;background:var(--brand);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.topbar-nav{display:flex;gap:2px;margin-left:1.5rem}
+.nav-btn{
+  padding:6px 14px;border-radius:7px;border:none;background:none;
+  font-size:13px;font-weight:500;color:var(--muted);transition:all .15s;display:flex;align-items:center;gap:6px
+}
+.nav-btn:hover{background:var(--surface2);color:var(--text)}
+.nav-btn.active{background:var(--brand-light);color:var(--brand)}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.notif-btn{
+  width:36px;height:36px;border-radius:8px;border:1px solid var(--border);
+  background:var(--surface2);display:flex;align-items:center;justify-content:center;
+  font-size:16px;position:relative;transition:background .15s
+}
+.notif-btn:hover{background:var(--brand-light)}
+.notif-badge{
+  position:absolute;top:4px;right:4px;width:8px;height:8px;
+  background:#E24B4A;border-radius:50%;border:2px solid var(--surface)
+}
+.avatar{
+  width:36px;height:36px;border-radius:50%;background:var(--brand);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:600;color:#fff;cursor:pointer
+}
+.logout-btn{
+  padding:6px 14px;border-radius:7px;border:1px solid var(--border);
+  background:none;font-size:12px;color:var(--muted);transition:all .15s
+}
+.logout-btn:hover{background:var(--red-light);border-color:#F09595;color:var(--red)}
+
+.dash-body{flex:1;padding:1.5rem;overflow-y:auto}
+.dash-body.hidden{display:none}
+
+/* ══════════════════════════════
+   ADMIN DASHBOARD
+══════════════════════════════ */
+.page-header{margin-bottom:1.5rem}
+.page-header-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.25rem}
+.page-title{font-size:1.3rem;font-weight:600;color:var(--text)}
+.page-subtitle{font-size:13px;color:var(--muted)}
+.date-badge{font-family:var(--mono);font-size:11px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:5px 10px;color:var(--muted)}
+
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.5rem}
+.stat-card{
+  background:var(--surface);border:1px solid var(--border-light);
+  border-radius:var(--radius-lg);padding:1.1rem 1.25rem;
+  box-shadow:var(--shadow)
+}
+.stat-label{font-size:11px;font-weight:500;color:var(--hint);letter-spacing:.5px;text-transform:uppercase;margin-bottom:.4rem}
+.stat-value{font-size:1.6rem;font-weight:600;color:var(--text);line-height:1;margin-bottom:.3rem}
+.stat-sub{font-size:12px;display:flex;align-items:center;gap:4px}
+.stat-up{color:var(--brand-mid)}
+.stat-down{color:#E24B4A}
+.stat-accent{width:4px;height:40px;border-radius:4px;margin-left:auto}
+.stat-header{display:flex;align-items:flex-start}
+.stat-info{flex:1}
+
+.content-grid{display:grid;grid-template-columns:1fr 360px;gap:1.25rem;margin-bottom:1.25rem}
+.card{background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-lg);box-shadow:var(--shadow)}
+.card-header{padding:1rem 1.25rem;border-bottom:1px solid var(--border-light);display:flex;align-items:center;justify-content:space-between}
+.card-title{font-size:14px;font-weight:600;color:var(--text)}
+.card-subtitle{font-size:12px;color:var(--hint)}
+.card-body{padding:1.25rem}
+
+/* Scan log table */
+.scan-table{width:100%;border-collapse:collapse}
+.scan-table th{font-size:11px;font-weight:500;color:var(--hint);text-transform:uppercase;letter-spacing:.5px;padding:0 10px 10px;text-align:left}
+.scan-table td{padding:10px;font-size:13px;border-top:1px solid var(--border-light);vertical-align:middle}
+.scan-table tr:hover td{background:var(--surface2)}
+.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500;gap:4px}
+.badge-green{background:var(--brand-light);color:var(--brand)}
+.badge-blue{background:var(--accent-light);color:var(--accent)}
+.badge-amber{background:var(--amber-light);color:var(--amber)}
+.badge-red{background:var(--red-light);color:var(--red)}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+
+/* Alert feed */
+.alert-list{display:flex;flex-direction:column;gap:10px;padding:1.25rem}
+.alert-item{display:flex;gap:12px;padding:10px 12px;border-radius:var(--radius);border:1px solid var(--border-light);background:var(--surface2)}
+.alert-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.alert-green{background:var(--brand-light)}
+.alert-amber{background:var(--amber-light)}
+.alert-red{background:var(--red-light)}
+.alert-blue{background:var(--accent-light)}
+.alert-content{flex:1;min-width:0}
+.alert-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:2px}
+.alert-meta{font-size:11px;color:var(--hint)}
+
+/* Campus map */
+.campus-map{
+  background:var(--surface2);border-radius:var(--radius);overflow:hidden;
+  position:relative;border:1px solid var(--border-light)
+}
+
+/* ══════════════════════════════
+   TEACHER VIEW
+══════════════════════════════ */
+.classroom-header{
+  background:linear-gradient(135deg,var(--brand) 0%,var(--brand-mid) 100%);
+  border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1.25rem;
+  color:#fff;display:flex;align-items:center;justify-content:space-between
+}
+.classroom-info h2{font-size:1.2rem;font-weight:600;margin-bottom:.25rem}
+.classroom-info p{font-size:13px;opacity:.8}
+.classroom-stats{display:flex;gap:1.5rem;text-align:center}
+.cls-stat-num{font-size:1.5rem;font-weight:700;display:block}
+.cls-stat-lbl{font-size:11px;opacity:.75}
+
+.roster-filters{display:flex;gap:8px;margin-bottom:1rem}
+.filter-btn{
+  padding:6px 14px;border-radius:20px;border:1px solid var(--border);
+  background:var(--surface);font-size:12px;font-weight:500;color:var(--muted);transition:all .15s
+}
+.filter-btn:hover,.filter-btn.active{background:var(--brand);border-color:var(--brand);color:#fff}
+
+.roster-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.student-card{
+  background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius);
+  padding:14px;display:flex;align-items:center;gap:12px;transition:box-shadow .15s;cursor:pointer
+}
+.student-card:hover{box-shadow:var(--shadow-md)}
+.student-avatar{
+  width:38px;height:38px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:600;flex-shrink:0
+}
+.s-present .student-avatar{background:var(--brand-light);color:var(--brand)}
+.s-absent .student-avatar{background:var(--red-light);color:var(--red)}
+.s-late .student-avatar{background:var(--amber-light);color:var(--amber)}
+.student-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:2px}
+.student-id{font-size:11px;color:var(--hint);font-family:var(--mono)}
+.student-status{font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;margin-top:3px}
+.s-present .student-status{color:var(--brand)}
+.s-absent .student-status{color:var(--red)}
+.s-late .student-status{color:var(--amber)}
+
+/* ══════════════════════════════
+   GUARDIAN PORTAL
+══════════════════════════════ */
+.guardian-header{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem}
+.child-card{
+  background:var(--brand);border-radius:var(--radius-lg);padding:1.5rem;color:#fff;
+  display:flex;align-items:center;gap:1rem
+}
+.child-avatar{width:52px;height:52px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;flex-shrink:0}
+.child-name{font-size:1.1rem;font-weight:600;margin-bottom:.2rem}
+.child-grade{font-size:12px;opacity:.8;margin-bottom:.5rem}
+.child-location{font-size:12px;background:rgba(255,255,255,.15);border-radius:6px;padding:4px 10px;display:inline-block}
+
+.status-card{
+  background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius-lg);padding:1.5rem;
+  display:flex;flex-direction:column;justify-content:space-between
+}
+.status-heading{font-size:13px;font-weight:600;color:var(--text);margin-bottom:.75rem}
+.status-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.status-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.status-label{font-size:13px;color:var(--text);flex:1}
+.status-time{font-size:11px;color:var(--hint);font-family:var(--mono)}
+
+.timeline{display:flex;flex-direction:column;gap:0}
+.tl-item{display:flex;gap:14px;position:relative;padding-bottom:1rem}
+.tl-item:last-child{padding-bottom:0}
+.tl-left{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:20px}
+.tl-dot{width:12px;height:12px;border-radius:50%;border:2px solid;flex-shrink:0;z-index:1}
+.tl-dot-green{background:var(--brand-light);border-color:var(--brand)}
+.tl-dot-blue{background:var(--accent-light);border-color:var(--accent)}
+.tl-dot-amber{background:var(--amber-light);border-color:var(--amber)}
+.tl-line{flex:1;width:2px;background:var(--border-light);margin:2px 0}
+.tl-item:last-child .tl-line{display:none}
+.tl-time{font-size:11px;color:var(--hint);font-family:var(--mono);margin-bottom:2px}
+.tl-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:2px}
+.tl-desc{font-size:12px;color:var(--muted)}
+
+.notif-panel{display:flex;flex-direction:column;gap:10px}
+.notif-item{
+  display:flex;gap:12px;padding:12px 14px;border-radius:var(--radius);
+  border:1px solid var(--border-light);background:var(--surface)
+}
+.notif-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.notif-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:2px}
+.notif-body{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:4px}
+.notif-time{font-size:11px;color:var(--hint);font-family:var(--mono)}
+
+/* ══════════════════════════════
+   QR SCAN PAGE
+══════════════════════════════ */
+#page-scan{background:var(--brand);align-items:center;justify-content:center;flex-direction:column;min-height:100vh}
+.scan-container{text-align:center;padding:2rem}
+.scan-mode-tabs{display:flex;background:rgba(255,255,255,.12);border-radius:30px;padding:4px;margin-bottom:2rem;width:280px;margin-left:auto;margin-right:auto}
+.scan-tab{
+  flex:1;padding:8px 16px;border-radius:26px;border:none;background:none;
+  font-size:13px;font-weight:500;color:rgba(255,255,255,.7);transition:all .2s;cursor:pointer
+}
+.scan-tab.active{background:rgba(255,255,255,.2);color:#fff}
+.scan-frame{
+  width:260px;height:260px;border-radius:20px;background:rgba(255,255,255,.08);
+  border:2px solid rgba(255,255,255,.25);margin:0 auto 1.5rem;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden
+}
+.scan-corners::before,.scan-corners::after{
+  content:'';position:absolute;width:30px;height:30px;border-color:#fff;border-style:solid
+}
+.scan-corner-tl{position:absolute;top:12px;left:12px;border-width:3px 0 0 3px;border-radius:4px 0 0 0}
+.scan-corner-tr{position:absolute;top:12px;right:12px;border-width:3px 3px 0 0;border-color:#fff;border-style:solid;width:30px;height:30px;border-radius:0 4px 0 0}
+.scan-corner-bl{position:absolute;bottom:12px;left:12px;border-width:0 0 3px 3px;border-color:#fff;border-style:solid;width:30px;height:30px;border-radius:0 0 0 4px}
+.scan-corner-br{position:absolute;bottom:12px;right:12px;border-width:0 3px 3px 0;border-color:#fff;border-style:solid;width:30px;height:30px;border-radius:0 0 4px 0}
+.scan-line{
+  position:absolute;width:calc(100% - 24px);height:2px;background:rgba(255,255,255,.7);
+  left:12px;top:50%;animation:scanLine 2s ease-in-out infinite;border-radius:2px
+}
+@keyframes scanLine{0%{top:12px;opacity:1}50%{top:calc(100% - 14px);opacity:.6}100%{top:12px;opacity:1}}
+.scan-qr-icon{font-size:3.5rem;opacity:.3}
+.scan-label{font-size:13px;font-weight:500;color:rgba(255,255,255,.75);margin-bottom:.3rem}
+.scan-sublabel{font-size:12px;color:rgba(255,255,255,.5);margin-bottom:2rem}
+.scan-input-group{display:flex;gap:8px;width:280px;margin:0 auto 1rem}
+.scan-input{
+  flex:1;padding:10px 14px;border-radius:var(--radius);border:1px solid rgba(255,255,255,.25);
+  background:rgba(255,255,255,.12);color:#fff;font-size:14px;outline:none;
+}
+.scan-input::placeholder{color:rgba(255,255,255,.45)}
+.scan-input:focus{border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.18)}
+.btn-scan-submit{
+  padding:10px 18px;border-radius:var(--radius);border:none;
+  background:#fff;color:var(--brand);font-size:13px;font-weight:600;transition:opacity .15s
+}
+.btn-scan-submit:hover{opacity:.9}
+.scan-result{
+  display:none;width:320px;margin:0 auto;background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.2);border-radius:var(--radius-lg);padding:1.25rem;text-align:left
+}
+.scan-result.show{display:block}
+.scan-result-header{display:flex;align-items:center;gap:12px;margin-bottom:1rem}
+.scan-result-avatar{width:44px;height:44px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:#fff}
+.scan-result-name{font-size:15px;font-weight:600;color:#fff}
+.scan-result-id{font-size:12px;color:rgba(255,255,255,.65);font-family:var(--mono)}
+.scan-result-rows{display:flex;flex-direction:column;gap:8px}
+.scan-result-row{display:flex;justify-content:space-between;font-size:12px}
+.scan-result-row span:first-child{color:rgba(255,255,255,.65)}
+.scan-result-row span:last-child{color:#fff;font-weight:500}
+.scan-success-tag{
+  margin-top:1rem;background:rgba(29,158,117,.35);border:1px solid rgba(29,158,117,.5);
+  border-radius:6px;padding:8px 12px;font-size:12px;color:#9FE1CB;text-align:center;font-weight:500
+}
+.back-to-dash{
+  margin-top:1.5rem;padding:10px 24px;border-radius:var(--radius);
+  border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);
+  color:#fff;font-size:13px;font-weight:500;transition:background .15s
+}
+.back-to-dash:hover{background:rgba(255,255,255,.2)}
+
+/* ══════════════════════════════
+   RESPONSIVE
+══════════════════════════════ */
+@media(max-width:900px){
+  .login-left{display:none}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .content-grid{grid-template-columns:1fr}
+  .guardian-header{grid-template-columns:1fr}
+  .roster-grid{grid-template-columns:1fr 1fr}
+}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════
+     PAGE: LOGIN
+══════════════════════════════ -->
+<div id="page-login" class="page active">
+  <div class="login-left">
+    <svg class="login-grid-bg" viewBox="0 0 420 700" preserveAspectRatio="none">
+      <defs><pattern id="g" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M28 0L0 0 0 28" fill="none" stroke="#fff" stroke-width="0.6"/></pattern></defs>
+      <rect width="420" height="700" fill="url(#g)"/>
+    </svg>
+    <div class="login-logo">
+      <div class="logo-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="3" width="7" height="7" rx="1.2" stroke="white" stroke-width="1.6"/>
+          <rect x="14" y="3" width="7" height="7" rx="1.2" stroke="white" stroke-width="1.6"/>
+          <rect x="3" y="14" width="7" height="7" rx="1.2" stroke="white" stroke-width="1.6"/>
+          <rect x="5" y="5" width="3" height="3" rx=".4" fill="white"/>
+          <rect x="16" y="5" width="3" height="3" rx=".4" fill="white"/>
+          <rect x="5" y="16" width="3" height="3" rx=".4" fill="white"/>
+          <path d="M14 14h2v2h-2zM18 14h3v2h-3zM14 18h3v3h-3zM19 19h2v2h-2z" fill="white"/>
+        </svg>
+      </div>
+      <p class="login-tagline">School System v2.0</p>
+      <h1 class="login-title">QR Student<br>Monitor</h1>
+      <p class="login-desc">Real-time presence tracking, guardian notifications, and secure campus monitoring in one unified platform.</p>
+    </div>
+    <div class="login-features">
+      <div class="feat-item">
+        <div class="feat-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.5"/></svg>
+        </div>
+        <span class="feat-text">Entrance &amp; classroom scan tracking</span>
+      </div>
+      <div class="feat-item">
+        <div class="feat-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="white" stroke-width="1.5"/><path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="white" stroke-width="1.5"/></svg>
+        </div>
+        <span class="feat-text">Instant guardian SMS &amp; app alerts</span>
+      </div>
+      <div class="feat-item">
+        <div class="feat-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="white" stroke-width="1.5"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="white" stroke-width="1.5"/></svg>
+        </div>
+        <span class="feat-text">Anti-proxy timestamped logs</span>
+      </div>
+      <div class="feat-item">
+        <div class="feat-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="white" stroke-width="1.5"/></svg>
+        </div>
+        <span class="feat-text">Emergency response coordination</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="login-right">
+    <div class="login-right-wrap">
+      <p class="login-heading-sub">Secure access</p>
+      <h2 class="login-heading">Welcome back</h2>
+
+      <div style="margin-bottom:1.25rem">
+        <label class="form-label">Sign in as</label>
+        <div class="role-grid">
+          <button class="role-btn active" onclick="selectRole(this,'admin')">
+            <span class="role-icon">🏫</span>Admin
+          </button>
+          <button class="role-btn" onclick="selectRole(this,'teacher')">
+            <span class="role-icon">📋</span>Teacher
+          </button>
+          <button class="role-btn" onclick="selectRole(this,'guardian')">
+            <span class="role-icon">👪</span>Guardian
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email address</label>
+        <input type="email" id="email-in" class="form-input" placeholder="e.g. admin@school.edu.ph"/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="pass-in" class="form-input" placeholder="Enter your password"/>
+          <button class="pw-toggle" onclick="togglePw()" title="Show/hide password">👁</button>
+        </div>
+        <div class="forgot"><a href="#">Forgot password?</a></div>
+      </div>
+
+      <div class="error-box" id="err-msg"></div>
+
+      <button class="btn-primary" onclick="doLogin()">Sign in to Dashboard</button>
+
+      <div class="divider"><span>or continue with</span></div>
+
+      <button class="btn-qr" onclick="goTo('scan')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="3" width="7" height="7" rx="1" stroke="#185FA5" stroke-width="1.5"/>
+          <rect x="14" y="3" width="7" height="7" rx="1" stroke="#185FA5" stroke-width="1.5"/>
+          <rect x="3" y="14" width="7" height="7" rx="1" stroke="#185FA5" stroke-width="1.5"/>
+          <rect x="5" y="5" width="3" height="3" fill="#185FA5"/>
+          <rect x="16" y="5" width="3" height="3" fill="#185FA5"/>
+          <rect x="5" y="16" width="3" height="3" fill="#185FA5"/>
+          <path d="M14 14h2v2h-2zM18 14h3v2h-3zM14 18h3v3h-3zM19 19h2v2h-2z" fill="#185FA5"/>
+        </svg>
+        Scan QR Code (Student / Kiosk)
+      </button>
+
+      <p class="login-note">Authorized personnel only. All sessions are logged and monitored.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     DASHBOARD SHELL (Admin/Teacher/Guardian share topbar)
+══════════════════════════════ -->
+<div id="page-dashboard" class="page dash-shell">
+  <div class="topbar">
+    <div class="topbar-logo">
+      <div class="topbar-logo-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="3" width="7" height="7" rx="1" stroke="white" stroke-width="1.5"/>
+          <rect x="14" y="3" width="7" height="7" rx="1" stroke="white" stroke-width="1.5"/>
+          <rect x="3" y="14" width="7" height="7" rx="1" stroke="white" stroke-width="1.5"/>
+          <rect x="5" y="5" width="3" height="3" fill="white"/>
+          <rect x="16" y="5" width="3" height="3" fill="white"/>
+          <rect x="5" y="16" width="3" height="3" fill="white"/>
+          <path d="M14 14h2v2h-2zM18 14h3v2h-3zM14 18h3v3h-3zM19 19h2v2h-2z" fill="white"/>
+        </svg>
+      </div>
+      QR Monitor
+    </div>
+    <nav class="topbar-nav" id="topbar-nav">
+      <!-- filled by JS per role -->
+    </nav>
+    <div class="topbar-right">
+      <button class="notif-btn" onclick="switchTab('notifications')">
+        🔔
+        <span class="notif-badge"></span>
+      </button>
+      <div class="avatar" id="user-avatar">AD</div>
+      <button class="logout-btn" onclick="doLogout()">Sign out</button>
+    </div>
+  </div>
+
+  <!-- ADMIN TABS -->
+  <div id="tab-overview" class="dash-body hidden">
+    <div class="page-header">
+      <div class="page-header-top">
+        <div>
+          <h1 class="page-title">School Overview</h1>
+          <p class="page-subtitle">Real-time campus monitoring dashboard</p>
+        </div>
+        <div class="date-badge" id="live-date"></div>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-info">
+            <div class="stat-label">Present Today</div>
+            <div class="stat-value">1,243</div>
+            <div class="stat-sub"><span class="stat-up">↑ 98.7%</span> attendance rate</div>
+          </div>
+          <div class="stat-accent" style="background:var(--brand-light)"></div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-info">
+            <div class="stat-label">Absent</div>
+            <div class="stat-value">16</div>
+            <div class="stat-sub"><span class="stat-down">↓ 1.3%</span> of enrolled</div>
+          </div>
+          <div class="stat-accent" style="background:var(--red-light)"></div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-info">
+            <div class="stat-label">Late Arrivals</div>
+            <div class="stat-value">28</div>
+            <div class="stat-sub"><span class="stat-amber" style="color:var(--amber)">⚠ 2.2%</span> flagged</div>
+          </div>
+          <div class="stat-accent" style="background:var(--amber-light)"></div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-info">
+            <div class="stat-label">Alerts Sent</div>
+            <div class="stat-value">44</div>
+            <div class="stat-sub" style="color:var(--accent)">📨 to guardians today</div>
+          </div>
+          <div class="stat-accent" style="background:var(--accent-light)"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-grid">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Live Scan Log</div>
+            <div class="card-subtitle">Last 10 recorded scans</div>
+          </div>
+          <span class="badge badge-green"><span class="badge-dot"></span> Live</span>
+        </div>
+        <div class="card-body" style="padding:0">
+          <table class="scan-table">
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>ID</th>
+                <th>Location</th>
+                <th>Time</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="scan-log-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Alert Feed</div>
+          <span class="badge badge-red"><span class="badge-dot"></span> 4 new</span>
+        </div>
+        <div class="alert-list" id="alert-feed"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Campus Presence Map</div>
+        <div class="card-subtitle">Building-level occupancy</div>
+      </div>
+      <div class="card-body">
+        <div class="campus-map" style="height:220px">
+          <svg width="100%" height="220" viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+            <!-- Background -->
+            <rect width="700" height="220" fill="#F1F5F3"/>
+            <!-- Path / road -->
+            <rect x="0" y="100" width="700" height="20" rx="4" fill="#D3D8D5" opacity=".5"/>
+            <rect x="340" y="0" width="20" height="220" rx="4" fill="#D3D8D5" opacity=".5"/>
+            <!-- Buildings -->
+            <rect x="30" y="20" width="130" height="70" rx="8" fill="#0F6E56" opacity=".15" stroke="#0F6E56" stroke-width="1.5"/>
+            <text x="95" y="52" text-anchor="middle" font-size="11" font-weight="600" fill="#0F6E56" font-family="'DM Sans',sans-serif">Main Building</text>
+            <text x="95" y="68" text-anchor="middle" font-size="10" fill="#085041" font-family="'DM Sans',sans-serif">487 present</text>
+            <rect x="180" y="20" width="130" height="70" rx="8" fill="#185FA5" opacity=".12" stroke="#185FA5" stroke-width="1.5"/>
+            <text x="245" y="52" text-anchor="middle" font-size="11" font-weight="600" fill="#185FA5" font-family="'DM Sans',sans-serif">Science Wing</text>
+            <text x="245" y="68" text-anchor="middle" font-size="10" fill="#0C447C" font-family="'DM Sans',sans-serif">213 present</text>
+            <rect x="30" y="130" width="130" height="70" rx="8" fill="#BA7517" opacity=".12" stroke="#BA7517" stroke-width="1.5"/>
+            <text x="95" y="162" text-anchor="middle" font-size="11" font-weight="600" fill="#BA7517" font-family="'DM Sans',sans-serif">Gymnasium</text>
+            <text x="95" y="178" text-anchor="middle" font-size="10" fill="#854F0B" font-family="'DM Sans',sans-serif">89 present</text>
+            <rect x="180" y="130" width="130" height="70" rx="8" fill="#0F6E56" opacity=".1" stroke="#0F6E56" stroke-width="1.5"/>
+            <text x="245" y="162" text-anchor="middle" font-size="11" font-weight="600" fill="#0F6E56" font-family="'DM Sans',sans-serif">Library</text>
+            <text x="245" y="178" text-anchor="middle" font-size="10" fill="#085041" font-family="'DM Sans',sans-serif">76 present</text>
+            <rect x="370" y="20" width="130" height="70" rx="8" fill="#A32D2D" opacity=".12" stroke="#A32D2D" stroke-width="1.5"/>
+            <text x="435" y="52" text-anchor="middle" font-size="11" font-weight="600" fill="#A32D2D" font-family="'DM Sans',sans-serif">Admin Office</text>
+            <text x="435" y="68" text-anchor="middle" font-size="10" fill="#791F1F" font-family="'DM Sans',sans-serif">42 present</text>
+            <rect x="520" y="20" width="150" height="70" rx="8" fill="#185FA5" opacity=".12" stroke="#185FA5" stroke-width="1.5"/>
+            <text x="595" y="52" text-anchor="middle" font-size="11" font-weight="600" fill="#185FA5" font-family="'DM Sans',sans-serif">Computer Lab</text>
+            <text x="595" y="68" text-anchor="middle" font-size="10" fill="#0C447C" font-family="'DM Sans',sans-serif">138 present</text>
+            <rect x="370" y="130" width="300" height="70" rx="8" fill="#0F6E56" opacity=".08" stroke="#1D9E75" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <text x="520" y="162" text-anchor="middle" font-size="11" font-weight="600" fill="#0F6E56" font-family="'DM Sans',sans-serif">Canteen / Grounds</text>
+            <text x="520" y="178" text-anchor="middle" font-size="10" fill="#085041" font-family="'DM Sans',sans-serif">198 present</text>
+            <!-- Entrance arrow -->
+            <polygon points="320,105 330,100 330,110" fill="#0F6E56" opacity=".5"/>
+            <text x="310" y="98" text-anchor="middle" font-size="9" fill="#0F6E56" font-family="'DM Sans',sans-serif">ENTRANCE</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEACHER TAB -->
+  <div id="tab-classroom" class="dash-body hidden">
+    <div class="page-header">
+      <h1 class="page-title">Classroom Roster</h1>
+      <p class="page-subtitle">Live attendance for your assigned class</p>
+    </div>
+    <div class="classroom-header">
+      <div class="classroom-info">
+        <h2>Grade 10 – Section Rizal</h2>
+        <p>Room 204 · Mrs. Santos · 3rd Period</p>
+      </div>
+      <div class="classroom-stats">
+        <div><span class="cls-stat-num">38</span><span class="cls-stat-lbl">Enrolled</span></div>
+        <div><span class="cls-stat-num">34</span><span class="cls-stat-lbl">Present</span></div>
+        <div><span class="cls-stat-num">2</span><span class="cls-stat-lbl">Late</span></div>
+        <div><span class="cls-stat-num">2</span><span class="cls-stat-lbl">Absent</span></div>
+      </div>
+    </div>
+    <div class="roster-filters" id="roster-filters">
+      <button class="filter-btn active" onclick="filterRoster(this,'all')">All (38)</button>
+      <button class="filter-btn" onclick="filterRoster(this,'present')">Present (34)</button>
+      <button class="filter-btn" onclick="filterRoster(this,'late')">Late (2)</button>
+      <button class="filter-btn" onclick="filterRoster(this,'absent')">Absent (2)</button>
+    </div>
+    <div class="roster-grid" id="roster-grid"></div>
+  </div>
+
+  <!-- GUARDIAN TAB -->
+  <div id="tab-guardian-home" class="dash-body hidden">
+    <div class="page-header">
+      <h1 class="page-title">My Child's Activity</h1>
+      <p class="page-subtitle">Real-time location and attendance updates</p>
+    </div>
+    <div class="guardian-header">
+      <div class="child-card">
+        <div class="child-avatar">JP</div>
+        <div>
+          <div class="child-name">Juan Paulo Reyes</div>
+          <div class="child-grade">Grade 10 – Section Rizal · Student ID: STU-2024-0482</div>
+          <div class="child-location">📍 Currently in: Room 204 – Math Class</div>
+        </div>
+      </div>
+      <div class="status-card">
+        <div class="status-heading">Today's Summary</div>
+        <div class="status-row"><div class="status-dot" style="background:var(--brand-mid)"></div><div class="status-label">School entry scanned</div><div class="status-time">06:48 AM</div></div>
+        <div class="status-row"><div class="status-dot" style="background:var(--accent-mid)"></div><div class="status-label">First class attended</div><div class="status-time">07:00 AM</div></div>
+        <div class="status-row"><div class="status-dot" style="background:var(--amber-pale)"></div><div class="status-label">Canteen break detected</div><div class="status-time">10:15 AM</div></div>
+        <div class="status-row"><div class="status-dot" style="background:var(--brand-mid)"></div><div class="status-label">Now in Room 204</div><div class="status-time">01:00 PM</div></div>
+      </div>
+    </div>
+
+    <div class="content-grid" style="grid-template-columns:1fr 1fr">
+      <div class="card">
+        <div class="card-header"><div class="card-title">Location Timeline</div></div>
+        <div class="card-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-left"><div class="tl-dot tl-dot-green"></div><div class="tl-line"></div></div>
+              <div><div class="tl-time">06:48 AM</div><div class="tl-title">School Entrance — Gate 1</div><div class="tl-desc">QR scanned at main entrance. Entry logged.</div></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-left"><div class="tl-dot tl-dot-blue"></div><div class="tl-line"></div></div>
+              <div><div class="tl-time">07:00 AM</div><div class="tl-title">Room 101 — English</div><div class="tl-desc">Classroom scan confirmed. Marked present.</div></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-left"><div class="tl-dot tl-dot-blue"></div><div class="tl-line"></div></div>
+              <div><div class="tl-time">08:00 AM</div><div class="tl-title">Room 103 — Filipino</div><div class="tl-desc">Classroom scan confirmed. Marked present.</div></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-left"><div class="tl-dot tl-dot-amber"></div><div class="tl-line"></div></div>
+              <div><div class="tl-time">10:15 AM</div><div class="tl-title">Canteen</div><div class="tl-desc">Break period. Last scan at canteen entrance.</div></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-left"><div class="tl-dot tl-dot-green"></div><div class="tl-line"></div></div>
+              <div><div class="tl-time">01:00 PM</div><div class="tl-title">Room 204 — Math (Current)</div><div class="tl-desc">Classroom scan confirmed. Currently present.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">Guardian Notifications</div><span class="badge badge-blue">5 today</span></div>
+        <div class="card-body" style="padding:0">
+          <div class="notif-panel" style="padding:1rem">
+            <div class="notif-item">
+              <div class="notif-icon" style="background:var(--brand-light)">✅</div>
+              <div><div class="notif-title">Entry Confirmed</div><div class="notif-body">Juan Paulo entered school premises at Gate 1.</div><div class="notif-time">06:48 AM · Today</div></div>
+            </div>
+            <div class="notif-item">
+              <div class="notif-icon" style="background:var(--accent-light)">📚</div>
+              <div><div class="notif-title">Class Started</div><div class="notif-body">Your child is now in English class, Room 101 with Mr. Cruz.</div><div class="notif-time">07:00 AM · Today</div></div>
+            </div>
+            <div class="notif-item">
+              <div class="notif-icon" style="background:var(--amber-light)">⚠️</div>
+              <div><div class="notif-title">Late Scan Detected</div><div class="notif-body">Juan Paulo was 3 minutes late to Filipino class in Room 103.</div><div class="notif-time">08:03 AM · Today</div></div>
+            </div>
+            <div class="notif-item">
+              <div class="notif-icon" style="background:var(--brand-light)">🍽️</div>
+              <div><div class="notif-title">Break Period</div><div class="notif-body">Juan Paulo is in the canteen during scheduled break.</div><div class="notif-time">10:15 AM · Today</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIFICATIONS TAB (shared) -->
+  <div id="tab-notifications" class="dash-body hidden">
+    <div class="page-header">
+      <h1 class="page-title">Notifications</h1>
+      <p class="page-subtitle">All system alerts and guardian messages</p>
+    </div>
+    <div class="card" style="max-width:680px">
+      <div class="card-body" style="padding:0">
+        <div class="notif-panel" style="padding:1rem">
+          <div class="notif-item">
+            <div class="notif-icon" style="background:var(--red-light)">🚨</div>
+            <div><div class="notif-title">Unscanned Student Alert</div><div class="notif-body">Maria Santos (STU-2024-0301) has not been scanned at any entrance for over 30 minutes. Guardian notified automatically.</div><div class="notif-time">08:32 AM · Today</div></div>
+          </div>
+          <div class="notif-item">
+            <div class="notif-icon" style="background:var(--amber-light)">⚠️</div>
+            <div><div class="notif-title">Late Arrival Batch</div><div class="notif-body">14 students arrived after 7:05 AM. Guardians of students with no prior excuse have been notified via SMS.</div><div class="notif-time">07:12 AM · Today</div></div>
+          </div>
+          <div class="notif-item">
+            <div class="notif-icon" style="background:var(--brand-light)">✅</div>
+            <div><div class="notif-title">Morning Gate Scan Complete</div><div class="notif-body">1,243 of 1,259 enrolled students successfully scanned at entrance. Attendance report generated.</div><div class="notif-time">07:01 AM · Today</div></div>
+          </div>
+          <div class="notif-item">
+            <div class="notif-icon" style="background:var(--accent-light)">📊</div>
+            <div><div class="notif-title">Daily Report Ready</div><div class="notif-body">Yesterday's attendance report has been compiled and sent to the Principal's email. 99.1% attendance rate.</div><div class="notif-time">Yesterday · 5:00 PM</div></div>
+          </div>
+          <div class="notif-item">
+            <div class="notif-icon" style="background:var(--red-light)">🔒</div>
+            <div><div class="notif-title">Emergency Drill — All Clear</div><div class="notif-body">Fire drill conducted at 2:00 PM. All 1,259 students accounted for via QR scan within 4 minutes 12 seconds.</div><div class="notif-time">Yesterday · 2:04 PM</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     PAGE: QR SCAN (Kiosk)
+══════════════════════════════ -->
+<div id="page-scan" class="page">
+  <div class="scan-container">
+    <p style="font-family:var(--mono);font-size:11px;letter-spacing:2px;color:rgba(255,255,255,.5);text-transform:uppercase;margin-bottom:.5rem">Attendance Kiosk</p>
+    <h2 style="font-size:1.6rem;font-weight:600;color:#fff;margin-bottom:.5rem">Scan Your QR Code</h2>
+    <p style="font-size:13px;color:rgba(255,255,255,.65);margin-bottom:1.5rem">Hold your student ID QR code up to the scanner</p>
+
+    <div class="scan-mode-tabs">
+      <button class="scan-tab active" onclick="setScanMode(this,'entrance')">🏫 Entrance</button>
+      <button class="scan-tab" onclick="setScanMode(this,'classroom')">📚 Classroom</button>
+    </div>
+
+    <div class="scan-frame">
+      <div class="scan-corner-tl"></div>
+      <div class="scan-corner-tr"></div>
+      <div class="scan-corner-bl"></div>
+      <div class="scan-corner-br"></div>
+      <div class="scan-line"></div>
+      <div class="scan-qr-icon">⬛</div>
+    </div>
+
+    <p class="scan-label">Or enter Student ID manually</p>
+    <p class="scan-sublabel">Type the ID number printed on the student card</p>
+
+    <div class="scan-input-group">
+      <input type="text" class="scan-input" id="manual-id" placeholder="e.g. STU-2024-0482" onkeydown="if(event.key==='Enter')doScan()"/>
+      <button class="btn-scan-submit" onclick="doScan()">Check In</button>
+    </div>
+
+    <div class="scan-result" id="scan-result">
+      <div class="scan-result-header">
+        <div class="scan-result-avatar" id="sr-avatar">JP</div>
+        <div>
+          <div class="scan-result-name" id="sr-name">Juan Paulo Reyes</div>
+          <div class="scan-result-id" id="sr-id">STU-2024-0482</div>
+        </div>
+      </div>
+      <div class="scan-result-rows">
+        <div class="scan-result-row"><span>Grade / Section</span><span id="sr-grade">Grade 10 – Section Rizal</span></div>
+        <div class="scan-result-row"><span>Scan point</span><span id="sr-location">Main Entrance – Gate 1</span></div>
+        <div class="scan-result-row"><span>Timestamp</span><span id="sr-time"></span></div>
+        <div class="scan-result-row"><span>Guardian notified</span><span>✓ SMS sent</span></div>
+      </div>
+      <div class="scan-success-tag">✔ Entry logged and recorded successfully</div>
+    </div>
+
+    <div style="margin-top:1.5rem;display:flex;gap:12px;justify-content:center">
+      <button class="back-to-dash" onclick="goTo('dashboard')">← Back to Dashboard</button>
+      <button class="back-to-dash" onclick="resetScan()">Scan Another</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── STATE ──
+let currentRole = 'admin';
+let scanMode = 'entrance';
+
+const DEMO_STUDENTS = [
+  {name:'Ana Dela Cruz',id:'STU-2024-0101',grade:'Gr 10 – Rizal',status:'present'},
+  {name:'Ben Flores',id:'STU-2024-0102',grade:'Gr 10 – Rizal',status:'present'},
+  {name:'Carla Reyes',id:'STU-2024-0103',grade:'Gr 10 – Rizal',status:'present'},
+  {name:'Diego Santos',id:'STU-2024-0104',grade:'Gr 10 – Rizal',status:'late'},
+  {name:'Elena Cruz',id:'STU-2024-0105',grade:'Gr 10 – Rizal',status:'present'},
+  {name:'Francis Tan',id:'STU-2024-0106',grade:'Gr 10 – Rizal',status:'absent'},
+  {name:'Grace Lim',id:'STU-2024-0107',grade:'Gr 10 – Rizal',status:'present'},
+  {name:'Hector Gomez',id:'STU-2024-0108',grade:'Gr 10 – Rizal',status:'present'},
+  {name:'Iris Bautista',id:'STU-2024-0109',grade:'Gr 10 – Rizal',status:'present'},
+  {name:'Juan Paulo Reyes',id:'STU-2024-0482',grade:'Gr 10 – Rizal',status:'present'},
+  {name:'Karen Uy',id:'STU-2024-0110',grade:'Gr 10 – Rizal',status:'present'},
+  {name:'Leo Mendoza',id:'STU-2024-0111',grade:'Gr 10 – Rizal',status:'present'},
+  {name:'Maria Santos',id:'STU-2024-0301',grade:'Gr 10 – Rizal',status:'absent'},
+  {name:'Nathan Villanueva',id:'STU-2024-0112',grade:'Gr 10 – Rizal',status:'present'},
+  {name:'Olivia Garcia',id:'STU-2024-0113',grade:'Gr 10 – Rizal',status:'late'},
+  {name:'Patrick Manalo',id:'STU-2024-0114',grade:'Gr 10 – Rizal',status:'present'},
+  {name:'Queenie Ramos',id:'STU-2024-0115',grade:'Gr 10 – Rizal',status:'present'},
+  {name:'Ramon Castro',id:'STU-2024-0116',grade:'Gr 10 – Rizal',status:'present'},
+  {name:'Sofia Torres',id:'STU-2024-0117',grade:'Gr 10 – Rizal',status:'present'},
+  {name:'Timothy Aquino',id:'STU-2024-0118',grade:'Gr 10 – Rizal',status:'present'},
+];
+
+const SCAN_LOG = [
+  {name:'Ana Dela Cruz',id:'STU-2024-0101',location:'Room 204',time:'1:02 PM',status:'present'},
+  {name:'Ben Flores',id:'STU-2024-0102',location:'Main Entrance',time:'6:47 AM',status:'present'},
+  {name:'Diego Santos',id:'STU-2024-0104',location:'Room 101',time:'7:08 AM',status:'late'},
+  {name:'Elena Cruz',id:'STU-2024-0105',location:'Science Wing',time:'12:58 PM',status:'present'},
+  {name:'Francis Tan',id:'STU-2024-0106',location:'Gate 1',time:'—',status:'absent'},
+  {name:'Grace Lim',id:'STU-2024-0107',location:'Library',time:'10:30 AM',status:'present'},
+  {name:'Hector Gomez',id:'STU-2024-0108',location:'Gymnasium',time:'2:15 PM',status:'present'},
+  {name:'Iris Bautista',id:'STU-2024-0109',location:'Room 204',time:'1:00 PM',status:'present'},
+  {name:'Maria Santos',id:'STU-2024-0301',location:'Gate 1',time:'—',status:'absent'},
+  {name:'Nathan Villanueva',id:'STU-2024-0112',location:'Computer Lab',time:'11:00 AM',status:'present'},
+];
+
+const ALERTS = [
+  {type:'red',icon:'🚨',title:'Unscanned Student',meta:'Maria Santos · 08:32 AM'},
+  {type:'amber',icon:'⏰',title:'Late: Diego Santos',meta:'Room 101 · 07:08 AM (3 min late)'},
+  {type:'amber',icon:'⏰',title:'Late: Olivia Garcia',meta:'Room 204 · 01:04 PM'},
+  {type:'green',icon:'✅',title:'Entry Confirmed × 1,243',meta:'Morning gate scan · 07:01 AM'},
+  {type:'blue',icon:'📨',title:'44 Guardian Alerts Sent',meta:'SMS dispatched · auto-trigger'},
+];
+
+// ── NAVIGATION ──
+function goTo(dest) {
+  ['login','dashboard','scan'].forEach(p => {
+    document.getElementById('page-'+p).classList.remove('active');
+  });
+  document.getElementById('page-'+dest).classList.add('active');
+}
+
+function switchTab(tab) {
+  ['overview','classroom','guardian-home','notifications'].forEach(t => {
+    const el = document.getElementById('tab-'+t);
+    if(el) el.classList.add('hidden');
+  });
+  const target = document.getElementById('tab-'+tab);
+  if(target) target.classList.remove('hidden');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const active = document.querySelector(`[data-tab="${tab}"]`);
+  if(active) active.classList.add('active');
+}
+
+// ── LOGIN ──
+function selectRole(el, role) {
+  currentRole = role;
+  document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function togglePw() {
+  const f = document.getElementById('pass-in');
+  f.type = f.type === 'password' ? 'text' : 'password';
+}
+
+function doLogin() {
+  const email = document.getElementById('email-in').value.trim();
+  const pass = document.getElementById('pass-in').value.trim();
+  const err = document.getElementById('err-msg');
+  if(!email || !pass) { showErr('Please enter your email and password.'); return; }
+  if(!email.includes('@')) { showErr('Please enter a valid email address.'); return; }
+  err.style.display = 'none';
+  setupDashboard(currentRole);
+  goTo('dashboard');
+}
+
+function showErr(msg) {
+  const e = document.getElementById('err-msg');
+  e.textContent = msg;
+  e.style.display = 'block';
+}
+
+function doLogout() {
+  document.getElementById('email-in').value = '';
+  document.getElementById('pass-in').value = '';
+  goTo('login');
+}
+
+// ── DASHBOARD SETUP ──
+function setupDashboard(role) {
+  const nav = document.getElementById('topbar-nav');
+  const av = document.getElementById('user-avatar');
+  nav.innerHTML = '';
+  if(role === 'admin') {
+    av.textContent = 'AD'; av.title = 'Admin';
+    nav.innerHTML = `
+      <button class="nav-btn active" data-tab="overview" onclick="switchTab('overview')">📊 Overview</button>
+      <button class="nav-btn" data-tab="classroom" onclick="switchTab('classroom')">📋 Classrooms</button>
+      <button class="nav-btn" data-tab="notifications" onclick="switchTab('notifications')">🔔 Alerts</button>
+      <button class="nav-btn" onclick="goTo('scan')">📷 QR Scan</button>
+    `;
+    switchTab('overview');
+    buildScanLog(); buildAlerts();
+  } else if(role === 'teacher') {
+    av.textContent = 'TC'; av.title = 'Teacher';
+    nav.innerHTML = `
+      <button class="nav-btn active" data-tab="classroom" onclick="switchTab('classroom')">📋 My Classroom</button>
+      <button class="nav-btn" data-tab="notifications" onclick="switchTab('notifications')">🔔 Alerts</button>
+      <button class="nav-btn" onclick="goTo('scan')">📷 QR Scan</button>
+    `;
+    switchTab('classroom');
+    buildRoster('all');
+  } else {
+    av.textContent = 'GD'; av.title = 'Guardian';
+    nav.innerHTML = `
+      <button class="nav-btn active" data-tab="guardian-home" onclick="switchTab('guardian-home')">👪 My Child</button>
+      <button class="nav-btn" data-tab="notifications" onclick="switchTab('notifications')">🔔 Notifications</button>
+    `;
+    switchTab('guardian-home');
+  }
+  updateClock();
+}
+
+function updateClock() {
+  const el = document.getElementById('live-date');
+  if(!el) return;
+  const now = new Date();
+  el.textContent = now.toLocaleDateString('en-PH',{weekday:'short',month:'short',day:'numeric',year:'numeric'}) + ' · ' + now.toLocaleTimeString('en-PH',{hour:'2-digit',minute:'2-digit'});
+  setTimeout(updateClock, 30000);
+}
+
+// ── BUILD COMPONENTS ──
+function buildScanLog() {
+  const tb = document.getElementById('scan-log-tbody');
+  if(!tb) return;
+  tb.innerHTML = SCAN_LOG.map(r => `
+    <tr>
+      <td><strong style="font-weight:500">${r.name}</strong></td>
+      <td><span style="font-family:var(--mono);font-size:11px;color:var(--hint)">${r.id}</span></td>
+      <td>${r.location}</td>
+      <td style="font-family:var(--mono);font-size:12px">${r.time}</td>
+      <td><span class="badge badge-${r.status==='present'?'green':r.status==='late'?'amber':'red'}">
+        <span class="badge-dot"></span>${r.status.charAt(0).toUpperCase()+r.status.slice(1)}
+      </span></td>
+    </tr>
+  `).join('');
+}
+
+function buildAlerts() {
+  const feed = document.getElementById('alert-feed');
+  if(!feed) return;
+  feed.innerHTML = ALERTS.map(a => `
+    <div class="alert-item">
+      <div class="alert-icon alert-${a.type}">${a.icon}</div>
+      <div class="alert-content">
+        <div class="alert-title">${a.title}</div>
+        <div class="alert-meta">${a.meta}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function buildRoster(filter) {
+  const grid = document.getElementById('roster-grid');
+  if(!grid) return;
+  const filtered = filter === 'all' ? DEMO_STUDENTS : DEMO_STUDENTS.filter(s => s.status === filter);
+  grid.innerHTML = filtered.map(s => {
+    const initials = s.name.split(' ').map(w=>w[0]).slice(0,2).join('');
+    return `
+      <div class="student-card s-${s.status}">
+        <div class="student-avatar">${initials}</div>
+        <div>
+          <div class="student-name">${s.name}</div>
+          <div class="student-id">${s.id}</div>
+          <div class="student-status">${s.status}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function filterRoster(btn, filter) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  buildRoster(filter);
+}
+
+// ── QR SCAN ──
+function setScanMode(btn, mode) {
+  scanMode = mode;
+  document.querySelectorAll('.scan-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  resetScan();
+}
+
+function doScan() {
+  const input = document.getElementById('manual-id').value.trim();
+  if(!input) return;
+  const student = DEMO_STUDENTS.find(s => s.id.toLowerCase() === input.toLowerCase()) || {
+    name: 'Unknown Student',
+    id: input,
+    grade: 'Unknown',
+    status: 'unknown'
+  };
+  const initials = student.name.split(' ').map(w=>w[0]).slice(0,2).join('');
+  const loc = scanMode === 'entrance' ? 'Main Entrance – Gate 1' : 'Room 204 – Math Class';
+  const now = new Date();
+  const t = now.toLocaleTimeString('en-PH',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  document.getElementById('sr-avatar').textContent = initials;
+  document.getElementById('sr-name').textContent = student.name;
+  document.getElementById('sr-id').textContent = student.id;
+  document.getElementById('sr-grade').textContent = student.grade;
+  document.getElementById('sr-location').textContent = loc;
+  document.getElementById('sr-time').textContent = t;
+  const res = document.getElementById('scan-result');
+  res.classList.add('show');
+}
+
+function resetScan() {
+  document.getElementById('manual-id').value = '';
+  document.getElementById('scan-result').classList.remove('show');
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('email-in').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+  document.getElementById('pass-in').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+});
+</script>
+</body>
+</html>
